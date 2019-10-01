@@ -1,0 +1,114 @@
+var body=document.body;
+body.style="background-color:#0086b3";
+
+var count=1;
+
+var maindiv=document.createElement("div");
+maindiv.setAttribute("style","text-align: center;width:400px;height:150px;background-color:#b3ffff;margin: 0 auto;border-radius:100px");
+body.appendChild(maindiv);
+
+let heading=document.createElement("h1");
+heading.style="font-family:Verdana";
+heading.innerText="TODO_APP";
+maindiv.append(heading);
+
+let inputtext=document.createElement("input");
+inputtext.setAttribute("style","text-align:center ;margin-top:10px;border-radius:10px");
+inputtext.type="text";
+inputtext.placeholder="add users";
+maindiv.appendChild(inputtext);
+
+var error = document.createElement("p");
+error.setAttribute("id", "err");
+error.setAttribute("style", "text-align:center;color:red");
+error.innerText = "give valid data";
+
+var table=document.createElement("table");
+table.id="tableid";
+
+table.setAttribute("style","border:4px solid yellow;background-color:white;margin :0 auto;margin-top:10px;border-radius:15px");
+
+var tableheader=table.createTHead();
+ var tablerow=tableheader.insertRow(0),
+    cell1=tablerow.insertCell(0),
+    cell2=tablerow.insertCell(1);
+cell1.innerHTML = "sno";
+cell2.innerHTML = "username";
+
+tablerow.setAttribute("style","color:red;border:1px solid yellow");
+
+body.appendChild(table);
+
+
+
+let savebutton=document.createElement("button");
+savebutton.setAttribute("onclick","saveuser()");
+savebutton.innerText="save";
+maindiv.appendChild(savebutton);
+
+var edited=document.createElement("button");
+edited.setAttribute("id","putdata");
+edited.setAttribute("onclick","updatingtext(this)");
+edited.innerText="edit";
+
+
+var table1=document.getElementById("tableid");
+function saveuser() {
+    if (!inputtext.value || inputtext.value.length == 0) {
+        alert(error.innerText);
+    } else {
+        var edit = document.createElement("button");
+        edit.id = "editor";
+        edit.innerText = "update";
+        let deletebutton = document.createElement("button");
+        deletebutton.innerText = "delete";
+        var childrows = table.insertRow(table.length);
+        childrows.insertCell(0).innerHTML =count;
+        childrows.insertCell(1).innerText = inputtext.value;
+        childrows.insertCell(2).appendChild(edit);
+        childrows.insertCell(3).appendChild(deletebutton);
+        edit.setAttribute("onclick", "editing(this.parentElement)");
+        deletebutton.setAttribute("onclick", "deleteuser(this.parentElement)");
+        inputtext.value = "";
+        count=parseInt(childrows.cells[0].innerText)+1
+    };
+
+}
+
+var firstdata;
+function editing(updatingdata){
+    savebutton.setAttribute("style","display:none");
+    edited.removeAttribute("style");
+    maindiv.appendChild(edited);
+    firstdata = updatingdata.parentElement.querySelectorAll("td")[1];
+        inputtext.value=firstdata.innerText;
+
+};
+
+function updatingtext(value){
+    savebutton.setAttribute("style","display:none");
+    if(inputtext.value.length==0||!inputtext.value){
+        //let error=document.getElementById("err");
+        alert(error.innerText)
+    }else{
+        firstdata.innerHTML=inputtext.value;
+        inputtext.value = "";
+        edited.setAttribute("style","display:none");
+        savebutton.removeAttribute("style");
+    }
+
+};
+
+function deleteuser(deletevalue){
+    deletevalue.parentElement.remove();
+    chagetable=document.getElementById("tableid");
+    var stoploop=chagetable.rows.length-1
+    for(var i=1;i<=stoploop;i++){
+        chagetable.rows[i].cells[0].innerText=i;
+    }
+count=1
+
+}
+
+
+

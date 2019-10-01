@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<input type="text" placeholder="enter text" id="data"/> &nbsp;
+<button onclick="addTodo()">Add</button>
+
+<br>
+<hr>
+
+<table>
+    <thead>
+    <tr>
+        <th>S.No</th>
+        <th>Text</th>
+    </tr>
+    </thead>
+    <tbody id="tableData">
+
+    </tbody>
+</table>
+
+<script>
+
+    function deleteTable(key) {
+        console.log(key);
+        if(key==0){
+            tableData.shift();
+            document.getElementById("tableData").innerHTML="<p>add data</p>";
+        displayData();
+         }else{
+            tableData.splice(key, 1);
+            displayData();
+        }
+
+    }
+
+    var tableData = [];
+
+    function displayData() {
+        var result = "";
+        tableData.map(function (val, key) {
+            result += `<tr> <td>${key}</td> <td>${val}</td> <td> <button onclick="deleteTable(${key})">Delete</button> </td> </tr>`;
+            document.getElementById("tableData").innerHTML = result;
+        });
+    }
+
+    displayData();
+
+    function addTodo() {
+        const val = document.getElementById("data").value;
+        if (val) {
+            tableData.push(val);
+        }
+        displayData();
+    }
+</script>
+
+</body>
+</html>
