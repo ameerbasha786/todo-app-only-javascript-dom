@@ -16,6 +16,12 @@ let inputtext=document.createElement("input");
 inputtext.setAttribute("style","text-align:center ;margin-top:10px;border-radius:10px");
 inputtext.type="text";
 inputtext.placeholder="add users";
+inputtext.addEventListener("keyup", function(event) {
+    if (event.keyCode === 13) {
+        event.preventDefault();
+        document.getElementById("savedata").click();
+    }
+});
 maindiv.appendChild(inputtext);
 
 var error = document.createElement("p");
@@ -44,6 +50,7 @@ body.appendChild(table);
 let savebutton=document.createElement("button");
 savebutton.setAttribute("onclick","saveuser()");
 savebutton.innerText="save";
+savebutton.id="savedata";
 maindiv.appendChild(savebutton);
 
 var edited=document.createElement("button");
@@ -52,7 +59,6 @@ edited.setAttribute("onclick","updatingtext(this)");
 edited.innerText="edit";
 
 
-var table1=document.getElementById("tableid");
 function saveuser() {
     if (!inputtext.value || inputtext.value.length == 0) {
         alert(error.innerText);
