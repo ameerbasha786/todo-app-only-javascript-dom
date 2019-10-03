@@ -24,6 +24,8 @@ inputtext.addEventListener("keyup", function(event) {
 });
 maindiv.appendChild(inputtext);
 
+
+
 var error = document.createElement("p");
 error.setAttribute("id", "err");
 error.setAttribute("style", "text-align:center;color:red");
@@ -49,8 +51,8 @@ body.appendChild(table);
 
 let savebutton=document.createElement("button");
 savebutton.setAttribute("onclick","saveuser()");
-savebutton.innerText="save";
 savebutton.id="savedata";
+savebutton.innerText="save";
 maindiv.appendChild(savebutton);
 
 var edited=document.createElement("button");
@@ -59,58 +61,73 @@ edited.setAttribute("onclick","updatingtext(this)");
 edited.innerText="edit";
 
 
+var deletebutton;
 function saveuser() {
-    if (!inputtext.value || inputtext.value.length == 0) {
+    var username=inputtext.value.trim();
+    if (!username || username.length == 0) {
         alert(error.innerText);
     } else {
         var edit = document.createElement("button");
         edit.id = "editor";
         edit.innerText = "update";
-        let deletebutton = document.createElement("button");
+         deletebutton = document.createElement("button");
         deletebutton.innerText = "delete";
         var childrows = table.insertRow(table.length);
         childrows.insertCell(0).innerHTML =count;
-        childrows.insertCell(1).innerText = inputtext.value;
+        childrows.insertCell(1).innerText = username;
         childrows.insertCell(2).appendChild(edit);
         childrows.insertCell(3).appendChild(deletebutton);
         edit.setAttribute("onclick", "editing(this.parentElement)");
         deletebutton.setAttribute("onclick", "deleteuser(this.parentElement)");
+
         inputtext.value = "";
         count=parseInt(childrows.cells[0].innerText)+1
     };
 
 }
 
-var firstdata;
+var firstdata,enablebutton;
 function editing(updatingdata){
+    for(var i=1;i<=table.rows.length-1;i++){
+        document.getElementById("tableid").rows[i].querySelectorAll("td")[3].children[0].disabled=false
+    }
+
     savebutton.setAttribute("style","display:none");
+    if(updatingdata.parentElement.querySelectorAll("td")[1]){
+    enablebutton= updatingdata.parentElement.querySelectorAll("td")[3].children[0];
+    enablebutton.disabled=true;
     edited.removeAttribute("style");
     maindiv.appendChild(edited);
     firstdata = updatingdata.parentElement.querySelectorAll("td")[1];
-        inputtext.value=firstdata.innerText;
 
+        inputtext.value=firstdata.innerText;
+    }else{
+        enablebutton.disabled=false;
+    }
 };
 
 function updatingtext(value){
     savebutton.setAttribute("style","display:none");
-    if(inputtext.value.length==0||!inputtext.value){
-        //let error=document.getElementById("err");
+    updatename=inputtext.value.trim();
+
+    if(!updatename||updatename.length==0){
         alert(error.innerText)
     }else{
-        firstdata.innerHTML=inputtext.value;
+        firstdata.innerHTML=updatename;
         inputtext.value = "";
         edited.setAttribute("style","display:none");
         savebutton.removeAttribute("style");
+        enablebutton.disabled=false
     }
 
 };
 
 function deleteuser(deletevalue){
     deletevalue.parentElement.remove();
-    chagetable=document.getElementById("tableid");
-    var stoploop=chagetable.rows.length-1
+    var changetable=document.getElementById("tableid");
+    var stoploop=changetable.rows.length-1;
     for(var i=1;i<=stoploop;i++){
-        chagetable.rows[i].cells[0].innerText=i;
+        changetable.rows[i].cells[0].innerText=i;
     }
 count=1
 
